@@ -1,0 +1,105 @@
+﻿<Page x:Class="Launcher0._2.RegPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Launcher0._2"
+      mc:Ignorable="d" 
+      d:DesignHeight="260" d:DesignWidth="500"
+      Title="RegPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+
+        <TextBlock Text="Логин"
+                   Grid.Row="2"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Foreground="#C6C5D9"
+                   FontFamily="Britannic Bold"
+                   FontSize="22"
+                   Margin="10"/>
+        <TextBlock Text="Пароль"
+                   Grid.Row="3"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Foreground="#C6C5D9"
+                   FontFamily="Britannic Bold"
+                   FontSize="22"
+                   Margin="0,0,10,0"/>
+        <TextBlock Text="Email"
+                   Grid.Row="1"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Foreground="#C6C5D9"
+                   FontFamily="Britannic Bold"
+                   FontSize="22"
+                   Margin="0,0,10,0"/>
+        <TextBlock Text="Venera"
+                   Grid.Row="4" 
+                   VerticalAlignment="Bottom"
+                   HorizontalAlignment="Left"
+                   Foreground="#AFAED9"
+                   FontFamily="Britannic Bold"
+                   FontSize="30" 
+                   Margin="7"/>
+
+
+
+        <TextBox x:Name="LoginTB"
+                 Grid.Row="2"
+                 Grid.Column="1"
+                 Margin="7"
+                 Background="#6F6C89"
+                 BorderBrush="#000011"
+                 Width="250"
+                 HorizontalAlignment="Left" 
+                 FontSize="18" Style="{StaticResource TBStyle}"/>
+        <TextBox x:Name="EmailTB"
+                 Grid.Row="1"
+                 Grid.Column="1"
+                 Margin="7"
+                 Background="#6F6C89"
+                 BorderBrush="#000011"
+                 Width="250"
+                 HorizontalAlignment="Left"
+                 FontSize="18" Style="{StaticResource TBStyle}"/>
+        <PasswordBox x:Name="PBPass"
+                     Grid.Row="3"
+                     Grid.Column="1"
+                     Margin="7"
+                     Background="#6F6C89"
+                     BorderBrush="#000011"
+                     Width="250"
+                     HorizontalAlignment="Left"
+                     FontSize="18" Style="{StaticResource PBPassStyle}"/>
+
+
+
+        <Button x:Name="RegBtn"
+                Content="Регистрация"
+                Grid.Column="1"
+                Grid.Row="4"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Height="33"
+                Width="100"
+                Margin="157,0,0,0"
+                Background="#27273A"
+                Foreground="#C6C5D9"
+                FontFamily="Arial Black"
+                Click="RegBtn_Click" Style="{StaticResource btnStyle}"/>
+
+    </Grid>
+</Page>
