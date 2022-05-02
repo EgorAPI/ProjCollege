@@ -39,7 +39,7 @@
                    FontSize="48"
                    Grid.ColumnSpan="3"
                    FontFamily="Britannic Bold"/>
-        <TextBlock Text="Логин"
+        <TextBlock Text="Email"
                    Grid.Row="1"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Right"
@@ -117,5 +117,39 @@
                    HorizontalAlignment="Left"
                    MouseDown="RegTbl_MouseDown"
                    Style="{DynamicResource Text}"/>
+
+        <ToggleButton x:Name="toggleRemember"
+                        Grid.Column="2" Content="запомнить"
+                      VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                      Height="15" Width="100"
+                      Background="{StaticResource MainColorTwo}"
+                      FontSize="14" Foreground="LightGray">
+            <ToggleButton.Template>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Height="13" Width="13" CornerRadius="2"
+                            HorizontalAlignment="Left"
+                            BorderThickness="1"
+                            Background="{StaticResource MainColorThree}"
+                                BorderBrush="Gray">
+                            <Image>
+                                <Image.Style>
+                                    <Style>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource
+                                            AncestorType={x:Type ToggleButton}}}" Value="true">
+                                                <Setter Property="Image.Source" Value="\Assets\checkmark.png"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </Border>
+                        <ContentPresenter Content="{TemplateBinding Content}" VerticalAlignment="Center"
+                                          Margin="10,-3,0,0" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </ToggleButton.Template>
+        </ToggleButton>
     </Grid>
 </Page>

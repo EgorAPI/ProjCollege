@@ -9,20 +9,50 @@
       Title="RegPage">
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="60"></RowDefinition>
-            <RowDefinition Height="40"></RowDefinition>
-            <RowDefinition Height="40"></RowDefinition>
-            <RowDefinition Height="40"></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
 
 
-        <TextBlock Text="Логин"
+        <Grid x:Name="CodeGrid" Visibility="Hidden">
+
+            <TextBlock Text="Подтвердите почту" x:Name="tbError"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Foreground="#C6C5D9"
+                   FontFamily="Britannic Bold"
+                   FontSize="22"
+                   Margin="60,0,10,90"/>
+
+            <TextBlock Text="Код"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Foreground="#C6C5D9"
+                   FontFamily="Britannic Bold"
+                   FontSize="22"
+                   Margin="60,0,10,0"/>
+
+            <TextBox x:Name="CodeTB"
+                 Margin="7"
+                 Background="#6F6C89"
+                 BorderBrush="#000011"
+                 Width="200"
+                 HorizontalAlignment="Center" VerticalAlignment="Center" 
+                 FontSize="18" Style="{StaticResource TBStyle}"/>
+
+        </Grid>
+
+        <Grid x:Name="RegGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Text="Логин"
                    Grid.Row="2"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Right"
@@ -30,6 +60,7 @@
                    FontFamily="Britannic Bold"
                    FontSize="22"
                    Margin="10"/>
+            
         <TextBlock Text="Пароль"
                    Grid.Row="3"
                    VerticalAlignment="Center"
@@ -38,6 +69,7 @@
                    FontFamily="Britannic Bold"
                    FontSize="22"
                    Margin="0,0,10,0"/>
+            
         <TextBlock Text="Email"
                    Grid.Row="1"
                    VerticalAlignment="Center"
@@ -46,6 +78,7 @@
                    FontFamily="Britannic Bold"
                    FontSize="22"
                    Margin="0,0,10,0"/>
+            
         <TextBlock Text="Venera"
                    Grid.Row="4" 
                    VerticalAlignment="Bottom"
@@ -55,9 +88,27 @@
                    FontSize="30" 
                    Margin="7"/>
 
+            <StackPanel Grid.Row="1"
+                        Grid.Column="1"
+                        Orientation="Horizontal">
+                
+                <TextBox x:Name="TBEmail"
+                         Margin="7"
+                         Background="#6F6C89"
+                         BorderBrush="#000011"
+                         Width="250"
+                         HorizontalAlignment="Left"
+                         TextChanged="TBEmail_TextChanged"
+                         FontSize="18" Style="{StaticResource TBStyle}"/>
 
+                <Rectangle x:Name="rectIndicator"
+                       HorizontalAlignment="Left" VerticalAlignment="Center"
+                       Margin="-20,0,0,0"
+                       Width="6" Height="6"/>
+                
+            </StackPanel>
 
-        <TextBox x:Name="LoginTB"
+            <TextBox x:Name="TBName"
                  Grid.Row="2"
                  Grid.Column="1"
                  Margin="7"
@@ -66,16 +117,12 @@
                  Width="250"
                  HorizontalAlignment="Left" 
                  FontSize="18" Style="{StaticResource TBStyle}"/>
-        <TextBox x:Name="EmailTB"
-                 Grid.Row="1"
-                 Grid.Column="1"
-                 Margin="7"
-                 Background="#6F6C89"
-                 BorderBrush="#000011"
-                 Width="250"
-                 HorizontalAlignment="Left"
-                 FontSize="18" Style="{StaticResource TBStyle}"/>
-        <PasswordBox x:Name="PBPass"
+
+            <StackPanel Grid.Row="3"
+                        Grid.Column="1"
+                        Orientation="Horizontal">
+                
+                <PasswordBox x:Name="PBPass"
                      Grid.Row="3"
                      Grid.Column="1"
                      Margin="7"
@@ -83,23 +130,40 @@
                      BorderBrush="#000011"
                      Width="250"
                      HorizontalAlignment="Left"
+                     PasswordChanged="PBPass_PasswordChanged"
                      FontSize="18" Style="{StaticResource PBPassStyle}"/>
 
+                <Rectangle  x:Name="rectIndicator1"
+                       HorizontalAlignment="Left" VerticalAlignment="Center"
+                       Margin="-20,0,0,0"
+                       Width="6" Height="6">
+
+                    <Rectangle.ToolTip>
+                        <ToolTip Background="LightGray">
+                            Должны быть:
+                            -*одну A-Z
+                            -*одну a-z
+                            -*один спец. символ
+                            -*длина не менее 8 и не более 40 сим.
+                        </ToolTip>
+                    </Rectangle.ToolTip>
+                </Rectangle>
+
+            </StackPanel>
+        </Grid>
 
 
         <Button x:Name="RegBtn"
                 Content="Регистрация"
-                Grid.Column="1"
-                Grid.Row="4"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Height="33"
-                Width="100"
-                Margin="157,0,0,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Height="33" Width="100"
+                Margin="0,0,50,30"
                 Background="#27273A"
                 Foreground="#C6C5D9"
                 FontFamily="Arial Black"
                 Click="RegBtn_Click" Style="{StaticResource btnStyle}"/>
+
 
     </Grid>
 </Page>

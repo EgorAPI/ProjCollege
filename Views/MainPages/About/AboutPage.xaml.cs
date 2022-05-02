@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Launcher0._2.Pages.MainPages
+namespace Launcher0._2.Views.MainPages.About
 {
     /// <summary>
-    /// Логика взаимодействия для SettingsPage.xaml
+    /// Interaction logic for AboutPage.xaml
     /// </summary>
-    public partial class SettingsPage : Page
+    public partial class AboutPage : Page
     {
-        public SettingsPage()
+        public AboutPage()
         {
             InitializeComponent();
         }

@@ -6,21 +6,22 @@
       xmlns:local="clr-namespace:Launcher0._2.Pages.MainPages"
       mc:Ignorable="d" 
       d:DesignHeight="660" d:DesignWidth="1115"
-      Title="ProfilePage">
+      Title="ProfilePage" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
+    <Page.Resources>
+    </Page.Resources>
 
     <Grid>
-        <Grid ShowGridLines="False">
+        <Grid Opacity=".7">
+            <Grid.Effect>
+                <BlurEffect Radius="20"/>
+            </Grid.Effect>
+
             <Grid.Background>
-                <RadialGradientBrush GradientOrigin="-0.5,0.5"
-                                     Center="0.5,0.5"
-                                     RadiusX="0.3"
-                                     RadiusY="1">
-                    <GradientStop Color="Orange" Offset="0.0"/>
-                    <GradientStop Color="#27273A" Offset="0.5"/>
-                </RadialGradientBrush>
+                <ImageBrush ImageSource="D:\Photo\картинки\кибер.jpg"
+                            Stretch="Fill"/>
             </Grid.Background>
-
-
+        </Grid>
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -30,122 +31,133 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Rectangle Grid.RowSpan="2"
+            <Border Grid.RowSpan="2"
                     HorizontalAlignment="Right" Width="1"
-                    Fill="{StaticResource MainColorTwo}" Opacity="0.5"/>
+                    Background="{StaticResource MainColorTwo}" Opacity="0.4">
 
-            <Rectangle Grid.ColumnSpan="2"
-                    VerticalAlignment="Top" Height="1"
-                    Fill="{StaticResource MainColorTwo}" Opacity="0.5"/>
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="4"
+                                      Opacity=".8"
+                                      ShadowDepth="2"/>
+                </Border.Effect>
+            </Border>
 
-            <Ellipse Margin="20"
-                     Fill="Gray"/>
-            
-            <TextBlock Text="UserName"
+            <Border Margin="10"
+                    CornerRadius="30">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="15"
+                                      Opacity=".5"
+                                      ShadowDepth="3"/>
+                </Border.Effect>
+                <Border.Background>
+                    <ImageBrush x:Name="imgPhoto" ImageSource="{Binding Photo}" Stretch="UniformToFill"/>
+                </Border.Background>
+            </Border>
+
+            <Button x:Name="btnPhoto"
+                    Grid.Row="1"
+                    Content="изменить фото"
+                    Width="150" Height="35"
+                    HorizontalAlignment="Center" VerticalAlignment="Top"
+                    Margin="10"
+                    FontSize="16"
+                    Foreground="Gray"
+                    Background="{StaticResource MainColorOne}"
+                    Style="{StaticResource btnStyle}"
+                    Click="btnPhoto_Click"/>
+
+            <Button x:Name="btnWallpaper"
+                    Grid.Column="1"
+                    Content="изменить обои"
+                    Width="150" Height="35"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    Margin="10"
+                    FontSize="16"
+                    Foreground="Gray"
+                    Background="{StaticResource MainColorOne}"
+                    Style="{StaticResource btnStyle}"
+                    Click="btnWallpaper_Click"/>
+
+            <TextBlock Text="{Binding UserName}"
                        Grid.Column="1"
                        Foreground="LightGray"
                        FontSize="72"
                        Margin="10"
                        VerticalAlignment="Top"
                        HorizontalAlignment="Left"/>
-            <TextBlock Text="Name - Surname"
+            <TextBlock Text="{Binding StringFormat=ID {0}, Path=ID}"
                        Grid.Column="1"
                        Foreground="LightGray"
                        FontSize="36"
                        Margin="10,25,0,0"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Left"/>
-            <TextBlock Text="UserStatus"
+            <TextBlock Text="{Binding UserStatus_id}"
                        Grid.Column="1"
                        Foreground="LightGray"
                        FontSize="36"
                        Margin="0,25,10,0"
                        VerticalAlignment="Top"
                        HorizontalAlignment="Right"/>
-            <Button x:Name="btnCreateGame" Grid.Column="1"
-                        Content="Добавить свою игру"
-                        Width="250" Height="40"
-                        HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                        Margin="10"
-                        FontSize="20"
-                        Foreground="LightGray"
-                        Click="btnCreateGame_Click"
-                        Background="{StaticResource MainColorOne}"
-                        Style="{StaticResource btnStyle}"/>
 
             <Grid Grid.Column="1" Grid.Row="1">
                 <StackPanel Orientation="Vertical">
+                    
                     <TextBox x:Name="tbEmail"
-                             Tag="Email"
+                             Text="{Binding Email}"
+                             Tag="email"
                              FontSize="26"
                              Width="350"
                              Height="50"
-                             HorizontalAlignment="Left"
-                             Margin="10" Padding="5"
-                             Background="#1F1F2D"
-                             BorderBrush="{StaticResource MainColorTwo}"
-                             Style="{StaticResource TBStyle}"/>
-                    <TextBox x:Name="tbPhone"
-                             Tag="Phone"
-                             FontSize="26"
-                             Width="350"
-                             Height="50"
+                             MaxLength="50"
                              HorizontalAlignment="Left"
                              Margin="10" Padding="5"
                              Background="#1F1F2D"
                              BorderBrush="{StaticResource MainColorTwo}"
                              Style="{StaticResource TBStyle}"/>
                     
-                    <StackPanel Orientation="Horizontal" Width="350"
-                                HorizontalAlignment="Left" Margin="10">
-                        <TextBox x:Name="tbDay"
-                                  Tag="Day"
-                                  Foreground="LightGray"
-                                  Width="90" Height="40"
-                                  FontSize="24"
-                                  HorizontalContentAlignment="Center"
-                                  Background="#1F1F2D"
-                                  BorderBrush="{StaticResource MainColorTwo}"
-                                  Style="{StaticResource TBStyle}"/>
-                        <TextBox x:Name="tbMonth"
-                                  Tag="Month"
-                                  Foreground="LightGray"
-                                  FontSize="24"
-                                  HorizontalContentAlignment="Center"
-                                  Width="90" Height="40" Margin="20,0,0,0"
-                                  Background="#1F1F2D"
-                                  BorderBrush="{StaticResource MainColorTwo}"
-                                  Style="{StaticResource TBStyle}"/>
-                        <TextBox x:Name="tbYear"
-                                  Tag="Year"
-                                  Foreground="LightGray"
-                                  FontSize="24"
-                                  HorizontalContentAlignment="Center"
-                                  Width="90" Height="40" Margin="20,0,0,0"
-                                  Background="#1F1F2D"
-                                  BorderBrush="{StaticResource MainColorTwo}"
-                                  Style="{StaticResource TBStyle}"/>
-                    </StackPanel>
-
+                    <TextBox x:Name="tbName"
+                             Tag="new username"
+                             FontSize="26"
+                             Width="350"
+                             Height="50"
+                             MaxLength="20"
+                             HorizontalAlignment="Left"
+                             Margin="10" Padding="5"
+                             Background="#1F1F2D"
+                             BorderBrush="{StaticResource MainColorTwo}"
+                             Style="{StaticResource TBStyle}"/>
+                    
                     <TextBox x:Name="tbPassword"
-                             Tag="Password"
+                             Tag="new password"
                              FontSize="26"
                              Width="350"
                              Height="50"
                              HorizontalAlignment="Left"
                              Margin="10" Padding="5"
                              Background="#1F1F2D"
+                             MaxLength="50"
                              BorderBrush="{StaticResource MainColorTwo}"
-                             Style="{StaticResource TBStyle}"/>
+                             Style="{StaticResource TBStyle}">
+                        
+                    </TextBox>
 
-                    <Button x:Name="btnSave"
-                            Content="Сохранить"
-                            Width="200" Height="40"
-                            HorizontalAlignment="Left"
-                            Margin="10"
-                            FontSize="20"
-                            Background="{StaticResource MainColorOne}"
-                            Style="{StaticResource btnStyle}"/>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Left">
+
+                        <Button x:Name="btnSave"
+                                Content="Сохранить"
+                                Width="200" Height="40"
+                                HorizontalAlignment="Left"
+                                Margin="10"
+                                FontSize="20"
+                                Foreground="Gray"
+                                Background="{StaticResource MainColorOne}"
+                                Style="{StaticResource btnStyle}"
+                                Click="btnSave_Click">
+                        </Button>
+
+                    </StackPanel>
                 </StackPanel>
 
 
@@ -160,8 +172,19 @@
                           BorderThickness="2"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Top">
-                        <TextBlock Text="Установленные :" FontSize="20"
-                                   Foreground="LightGray"/>
+                        <ListView.Effect>
+                            <DropShadowEffect BlurRadius="10"
+                                              ShadowDepth="0"
+                                              Opacity="0.5"/>
+                        </ListView.Effect>
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding NameApp}"
+                                           FontSize="20"
+                                           Foreground="LightGray"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     </ListView>
                     
                     <Button x:Name="btnPlay"

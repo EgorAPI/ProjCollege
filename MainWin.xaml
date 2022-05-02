@@ -93,14 +93,23 @@
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal"
                             FlowDirection="RightToLeft" Background="#1C1B34">
-                    <TextBlock Text="Nickname"
-                               Margin="15,0,0,0"
+                    <TextBlock Text="{Binding UserName}"
+                               Margin="15,0,15,0"
                                VerticalAlignment="Center"
                                FontSize="18"
                                Style="{DynamicResource TextMenu}"/>
-                    <Ellipse Width="40"
-                             Fill="Gray"
-                             Margin="3"/>
+                    
+                    <Border CornerRadius="10"
+                            Width="40">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="5"
+                                      Opacity=".5"
+                                      ShadowDepth="1"/>
+                        </Border.Effect>
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding Photo}" Stretch="UniformToFill"/>
+                        </Border.Background>
+                    </Border>
                 </StackPanel>
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal"
@@ -172,7 +181,7 @@
                                                 Storyboard.TargetName="MenuPnl"
                                                 Storyboard.TargetProperty="Width"
                                                 Duration="0:0:0.2"
-                                                From="75" To="220">
+                                                From="75" To="270">
                                             </DoubleAnimation>
                                         </Storyboard>
                                     </BeginStoryboard>
@@ -184,7 +193,7 @@
                                                 Storyboard.TargetName="MenuPnl"
                                                 Storyboard.TargetProperty="Width"
                                                 Duration="0:0:0.2"
-                                                From="220" To="75">
+                                                From="270" To="75">
                                             </DoubleAnimation>
                                         </Storyboard>
                                     </BeginStoryboard>
@@ -227,9 +236,9 @@
                                           Style="{DynamicResource menu_btn}">
                                 <StackPanel Orientation="Horizontal"
                                             Height="65">
-                                    <Image Source="Assets/btn_store_def.png"
+                                    <Image Source="Assets/btn_store.png"
                                            Stretch="Uniform"
-                                           Margin="5"
+                                           Margin="7"
                                            HorizontalAlignment="Left"/>
                                     <TextBlock Text="Магазин"
                                                FontSize="22"
@@ -244,11 +253,11 @@
                                           Style="{DynamicResource menu_btn}">
                                 <StackPanel Orientation="Horizontal"
                                             Height="65">
-                                    <Image Source="Assets/btn_settings_def.png"
+                                    <Image Source="Assets/btn_about.png"
                                            Stretch="Uniform"
-                                           Margin="6"
+                                           Margin="9"
                                            HorizontalAlignment="Left"/>
-                                    <TextBlock Text="Настройки"
+                                    <TextBlock Text="О программе"
                                                FontSize="22"
                                                VerticalAlignment="Center"
                                                Margin="10,0,0,0"
@@ -256,8 +265,27 @@
                                 </StackPanel>
                             </ListViewItem>
 
-                            <ListViewItem Height="70"
+                            <ListViewItem Height="70" x:Name="itmCreate"
                                           BorderThickness="0"
+                                          Visibility="Hidden"
+                                          Style="{DynamicResource menu_btn}">
+                                <StackPanel Orientation="Horizontal"
+                                            Height="65">
+                                    <Image Source="Assets/btn_create.png"
+                                           Stretch="Uniform"
+                                           Margin="8"
+                                           HorizontalAlignment="Left"/>
+                                    <TextBlock Text="Создать продукт"
+                                               FontSize="22"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"
+                                               Style="{DynamicResource TextMenu}"/>
+                                </StackPanel>
+                            </ListViewItem>
+
+                            <ListViewItem Height="70" x:Name="itmManage"
+                                          BorderThickness="0"
+                                          Visibility="Hidden"
                                           Style="{DynamicResource menu_btn}">
                                 <StackPanel Orientation="Horizontal"
                                             Height="65">

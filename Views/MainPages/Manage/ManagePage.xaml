@@ -24,59 +24,9 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Border Margin="10"
-                BorderBrush="DarkGray"
-                BorderThickness="2"
-                CornerRadius="30">
+        <StackPanel Orientation="Vertical">
+            <TextBlock FontSize="24" Margin="10" Foreground="White"/>
+        </StackPanel>
 
-            <StackPanel Orientation="Vertical">
-
-                <TextBlock Text="Приложения"
-                           HorizontalAlignment="Center"
-                           Style="{StaticResource TBText}"/>
-
-                <TextBlock Text="Всего: "
-                           Margin="10,0,0,15"
-                           Style="{StaticResource TBText}"/>
-
-                <TextBlock Text="Ожидают подтвержения: "
-                           Margin="10,0,0,15"
-                           Style="{StaticResource TBText}"/>
-
-                <TextBlock Text="Подробнее:"
-                           Margin="10,0,0,15"
-                           Style="{StaticResource TBText}"/>
-            </StackPanel>
-        </Border>
-
-        <Border Margin="10" Grid.Column="1"
-                BorderBrush="DarkGray"
-                BorderThickness="2"
-                CornerRadius="30">
-
-            <StackPanel Orientation="Vertical">
-
-                <TextBlock Text="Пользователи"
-                           HorizontalAlignment="Center"
-                           Style="{StaticResource TBText}"/>
-
-                <TextBlock Text="Всего: "
-                           Margin="10,0,0,15"
-                           Style="{StaticResource TBText}"/>
-
-                <TextBlock Text="Админ(статус): "
-                           Margin="10,0,0,15"
-                           Style="{StaticResource TBText}"/>
-
-                <TextBlock Text="Автор(статус): "
-                           Margin="10,0,0,15"
-                           Style="{StaticResource TBText}"/>
-
-                <TextBlock Text="Подробнее:"
-                           Margin="10,0,0,15"
-                           Style="{StaticResource TBText}"/>
-
-            </StackPanel>
-        </Border>
     </Grid>
 </Page>

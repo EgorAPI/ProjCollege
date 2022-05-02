@@ -9,122 +9,158 @@ using System.Threading.Tasks;
 using Launcher0._2.Classes;
 using Launcher0._2.Models;
 using System.Windows;
+using MySql.Data.MySqlClient;
 
 namespace Launcher0._2.Data
 {
     public class dbUser
     {
-        private DataBase conn = new DataBase();
+        private DataBaseConnection conn = new DataBaseConnection();
 
-        //Получение 1-го пользователя из БД по id
+        //Получение 1-го пользователя по id
         public async Task<User> GetUser(int id)
         {
-            string query = $"select * from Users where ID = {id}";
-
-            User user = new User();
+            string query = $"SELECT Users.ID, UserName, Password, Email, DateOfCreated, UserStatus.NameStatus as UserStatus_id from Users LEFT JOIN UserStatus on UserStatus.ID = Users.UserStatus_id where Users.ID = {id}";
 
             try
             {
-                SqlCommand comm = new SqlCommand(query, conn.connOpen());
-                SqlDataReader reader = await comm.ExecuteReaderAsync();
-                if (reader.HasRows)
-                {
-                    while (await reader.ReadAsync())
+                User user = new User();
+                using (MySqlCommand comm = new MySqlCommand(query, conn.connOpen()))
+                using (MySqlDataReader reader = (MySqlDataReader)await comm.ExecuteReaderAsync())
+                    if (reader.HasRows)
                     {
-                        user.ID = Convert.ToInt32(reader["ID"]);
-                        user.UserName = reader["UserName"].ToString();
-                        user.Password = reader["Password"].ToString();
-                        user.Email = reader["Email"].ToString();
-                        user.Phone = reader["Phone"].ToString();
-                        user.DateOfCreated = (DateTime)reader["DateOfCreated"];
-                        user.DateOfBirth = (DateTime)reader["DateOfBirth"];
-                        user.UserStatus_id =Convert.ToInt32(reader["UserStatus_id"]);
+                        while (await reader.ReadAsync())
+                        {
+                            user.ID = Convert.ToInt32(reader["ID"]);
+                            user.UserName = reader["UserName"].ToString();
+                            user.Password = reader["Password"].ToString();
+                            user.Email = reader["Email"].ToString();
+                            user.DateOfCreated = (DateTime)reader["DateOfCreated"];
+                            user.UserStatus_id = reader["UserStatus_id"].ToString();
+                        }
                     }
-                }
                 conn.connClose();
+                return user;
             }
             catch (Exception ex)
             {
                 conn.connClose();
                 MessageBox.Show(ex.Message);
+                return null;
             }
-            conn.connClose();
-            return user;
         }
 
-        //Получение 1-го пользователя из БД по Email and Password
+        //Получение 1-го пользователя по Email and Password
         public async Task<User> GetUser(string email, string password)
         {
-            string query = $"select * from Users where Email = @email and Password = @password";
-
-            User user = new User();
+            string query = $"SELECT Users.ID, UserName, Password, Email, DateOfCreated, UserStatus.NameStatus as UserStatus_id from Users LEFT JOIN UserStatus on UserStatus.ID = Users.UserStatus_id where Email = @email and Password = @password";
 
             try
             {
-                SqlCommand comm = new SqlCommand(query, conn.connOpen());
-                comm.Parameters.AddWithValue("@email", email);
-                comm.Parameters.AddWithValue("@password", password);
-                SqlDataReader reader = await comm.ExecuteReaderAsync();
-                if (reader.HasRows)
+                User user = new User();
+                using (MySqlCommand comm = new MySqlCommand(query, conn.connOpen()))
                 {
-                    while (await reader.ReadAsync())
+                    comm.Parameters.AddWithValue("@email", email);
+                    comm.Parameters.AddWithValue("@password", password);
+                    using (MySqlDataReader reader = (MySqlDataReader)await comm.ExecuteReaderAsync())
                     {
-                        user.ID = Convert.ToInt32(reader["ID"]);
-                        user.UserName = reader["UserName"].ToString();
-                        user.Password = reader["Password"].ToString();
-                        user.Email = reader["Email"].ToString();
-                        user.Phone = reader["Phone"].ToString();
-                        user.DateOfCreated = (DateTime)reader["DateOfCreated"];
-                        user.DateOfBirth = (DateTime)reader["DateOfBirth"];
-                        user.UserStatus_id = Convert.ToInt32(reader["UserStatus_id"]);
+                        if (reader.HasRows)
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                user.ID = Convert.ToInt32(reader["ID"]);
+                                user.UserName = reader["UserName"].ToString();
+                                user.Password = reader["Password"].ToString();
+                                user.Email = reader["Email"].ToString();
+                                user.DateOfCreated = (DateTime)reader["DateOfCreated"];
+                                user.UserStatus_id = reader["UserStatus_id"].ToString();
+                            }
+                        }
+
+                        conn.connClose();
+                        return user;
                     }
                 }
-                conn.connClose();
+
             }
             catch (Exception ex)
             {
                 conn.connClose();
                 MessageBox.Show(ex.Message);
+                return null;
             }
-            conn.connClose();
-            return user;
         }
 
-        //Получение всех пользователей из БД
+        public async Task<User> GetUser(string email)
+        {
+            string query = $"SELECT Users.ID, UserName, Password, Email, DateOfCreated, UserStatus.NameStatus as UserStatus_id from Users LEFT JOIN UserStatus on UserStatus.ID = Users.UserStatus_id where Email = @email";
+
+            try
+            {
+                User user = new User();
+                using (MySqlCommand comm = new MySqlCommand(query, conn.connOpen()))
+                {
+                    comm.Parameters.AddWithValue("@email", email);
+                    using (MySqlDataReader reader = (MySqlDataReader)await comm.ExecuteReaderAsync())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                user.ID = Convert.ToInt32(reader["ID"]);
+                                user.UserName = reader["UserName"].ToString();
+                                user.Password = reader["Password"].ToString();
+                                user.Email = reader["Email"].ToString();
+                                user.DateOfCreated = (DateTime)reader["DateOfCreated"];
+                                user.UserStatus_id = reader["UserStatus_id"].ToString();
+                            }
+                        }
+
+                        conn.connClose();
+                        return user;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                conn.connClose();
+                MessageBox.Show(ex.Message);
+                return null;
+            }
+        }
+
+        //Получение всех пользователей
         public async Task<List<User>> GetUsers()
         {
-            string query = $"select * from Users";
+            string query = $"select * from GetUsers";
 
             List<User> users;
 
             try
             {
-                SqlCommand comm = new SqlCommand(query, conn.connOpen());
-                SqlDataReader reader = await comm.ExecuteReaderAsync();
-                if (reader.HasRows)
-                {
-                    users = new List<User>();
-                    while (await reader.ReadAsync())
+                using (MySqlCommand comm = new MySqlCommand(query, conn.connOpen()))
+                using (MySqlDataReader reader = (MySqlDataReader)await comm.ExecuteReaderAsync())
+                    if (reader.HasRows)
                     {
-                        User user = new User();
-                        user.ID = Convert.ToInt32(reader["ID"]);
-                        user.UserName = reader["UserName"].ToString();
-                        user.Password = reader["Password"].ToString();
-                        user.Email = reader["Email"].ToString();
-                        user.Phone = reader["Phone"].ToString();
-                        user.DateOfCreated = (DateTime)reader["DateOfCreated"];
-                        user.DateOfBirth = (DateTime)reader["DateOfBirth"];
-                        user.UserStatus_id = Convert.ToInt32(reader["UserStatus_id"]);
-                        users.Add(user);
+                        users = new List<User>();
+                        while (await reader.ReadAsync())
+                        {
+                            User user = new User();
+                            user.ID = Convert.ToInt32(reader["ID"]);
+                            user.UserName = reader["UserName"].ToString();
+                            user.Password = reader["Password"].ToString();
+                            user.Email = reader["Email"].ToString();
+                            user.DateOfCreated = (DateTime)reader["DateOfCreated"];
+                            user.UserStatus_id = reader["UserStatus_id"].ToString();
+                            users.Add(user);
+                        }
+
+                        conn.connClose();
+                        return users;
                     }
-                    conn.connClose();
-                    return users;
-                }
-                else
-                {
-                    conn.connClose();
-                    return null;
-                }
+                conn.connClose();
+                return null;
             }
             catch (Exception ex)
             {
@@ -141,31 +177,35 @@ namespace Launcher0._2.Data
             int res = 0;
             try
             {
-                SqlCommand comm = new SqlCommand(query, conn.connOpen());
-                comm.Parameters.AddWithValue("@username", user.UserName);
-                comm.Parameters.AddWithValue("@password", user.Password);
-                comm.Parameters.AddWithValue("@email", user.Email);
+                using (MySqlCommand comm = new MySqlCommand(query, conn.connOpen()))
+                {
+                    comm.Parameters.AddWithValue("@username", user.UserName);
+                    comm.Parameters.AddWithValue("@password", user.Password);
+                    comm.Parameters.AddWithValue("@email", user.Email);
+                    res = await comm.ExecuteNonQueryAsync();
 
-                res = await comm.ExecuteNonQueryAsync();
-                conn.connClose();
+                    conn.connClose();
+                    return res;
+                }
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-
+            conn.connClose();
             return res;
         }
 
-        //Удаление пользователя(аккаунта) из БД по id
+        //Удаление пользователя по id
         public async Task<int> DeleteUser(int id)
         {
             string query = $"delete from Users where ID = {id}";
             int res = 3;
             try
             {
-                SqlCommand comm = new SqlCommand(query, conn.connOpen());
-                res = await comm.ExecuteNonQueryAsync();
+                using (MySqlCommand comm = new MySqlCommand(query, conn.connOpen()))
+                    res = await comm.ExecuteNonQueryAsync();
                 conn.connClose();
                 if (res !=0)
                 {
@@ -174,74 +214,84 @@ namespace Launcher0._2.Data
             }
             catch (Exception ex)
             {
+                conn.connClose();
                 MessageBox.Show(ex.Message);
             }
             return res;
         }
 
-        //Изменение(обновление) пользователя
+        //Изменение пользователя
         public async Task<int> UpdateUser(User user)
         {
-            string query = $"update Users set UserName = @username, Password = @password, Email = @email, DateOfBirth = '{user.DateOfBirth}' where ID = {user.ID}";
+            string query = $@"update Users set UserName = @username, Password = @password, Email = @email where ID = {user.ID}";
             int res = 0;
             try
             {
-                SqlCommand comm = new SqlCommand(query, conn.connOpen());
-                comm.Parameters.AddWithValue("@username", user.UserName);
-                comm.Parameters.AddWithValue("@password", user.Password);
-                comm.Parameters.AddWithValue("@email", user.Email);
+                using (MySqlCommand comm = new MySqlCommand(query, conn.connOpen()))
+                {
+                    comm.Parameters.AddWithValue("@username", user.UserName);
+                    comm.Parameters.AddWithValue("@password", user.Password);
+                    comm.Parameters.AddWithValue("@email", user.Email);
 
-                res = await comm.ExecuteNonQueryAsync();
-                conn.connClose();
+                    res = await comm.ExecuteNonQueryAsync();
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
 
+            conn.connClose();
             return res;
         }
 
         //Проверка наличия пользователя в бд по Email
-        public async Task<bool> CheckUserEmail_in_DB(string email)
+        public bool CheckUserEmail_in_DB(string email)
         {
             string comm1 = "select * from Users where Email = @email";
 
-            SqlCommand command = new SqlCommand(comm1, conn.connOpen());
-            command.Parameters.AddWithValue("email", email);
-            SqlDataReader reader = await command.ExecuteReaderAsync();
-            conn.connClose();
-
-            if (reader.HasRows)
+            using (MySqlCommand command = new MySqlCommand(comm1, conn.connOpen()))
             {
-                return true;
-            }
-            else
-            {
-                return false;
+                command.Parameters.AddWithValue("email", email);
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        conn.connClose();
+                        return true;
+                    }
+                    else
+                    {
+                        conn.connClose();
+                        return false;
+                    }
+                }
             }
         }
 
         //Проверка наличия пользователя в бд по Email и Паролю
-        public async Task<bool> CheckUserEmailandPassword_in_DB(string email, string password)
+        public bool CheckUserEmailandPassword_in_DB(string email, string password)
         {
             string comm1 = "select * from Users where Email = @email and Password = @password";
 
-            SqlCommand command = new SqlCommand(comm1, conn.connOpen());
-            command.Parameters.AddWithValue("@email", email);
-            command.Parameters.AddWithValue("@password", password);
-
-            SqlDataReader reader = await command.ExecuteReaderAsync();
-
-            if (reader.HasRows)
+            using (MySqlCommand command = new MySqlCommand(comm1, conn.connOpen()))
             {
-                conn.connClose();
-                return true;
-            }
-            else
-            {
-                conn.connClose();
-                return false;
+                command.Parameters.AddWithValue("@email", email);
+                command.Parameters.AddWithValue("@password", password);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        conn.connClose();
+                        return true;
+                    }
+                    else
+                    {
+                        conn.connClose();
+                        return false;
+                    }
+                }
             }
         }
     }

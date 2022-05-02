@@ -9,7 +9,50 @@
       Title="ForgotPassPage" >
 
     <Grid>
-        <TextBox x:Name="tbEmail"
+        <Grid x:Name="PassChangeGrid" Visibility="Hidden">
+            
+            <TextBox x:Name="TBPas"
+                 Tag="новый пароль"
+                 Height="35"
+                 Margin="50"
+                 FontSize="24"
+                 Foreground="LightGray"
+                 Background="#6F6C89"
+                 BorderBrush="#000011"
+                 Style="{StaticResource TBStyle}"/>
+            
+            
+        </Grid>
+
+        <Grid x:Name="CodeGrid" Visibility="Hidden">
+
+            <TextBlock Text="Подтвердите почту" x:Name="tbError"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Foreground="#C6C5D9"
+                   FontFamily="Britannic Bold"
+                   FontSize="22"
+                   Margin="60,0,10,90"/>
+
+            <TextBlock Text="Код"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Foreground="#C6C5D9"
+                   FontFamily="Britannic Bold"
+                   FontSize="22"
+                   Margin="60,0,10,0"/>
+
+            <TextBox x:Name="CodeTB"
+                 Margin="7"
+                 Background="#6F6C89"
+                 BorderBrush="#000011"
+                 Width="200"
+                 HorizontalAlignment="Center" VerticalAlignment="Center" 
+                 FontSize="18" Style="{StaticResource TBStyle}"/>
+
+        </Grid>
+
+        <TextBox x:Name="TBEmail" Visibility="Visible"
                  Tag="Email"
                  Height="35"
                  Margin="50"
@@ -18,6 +61,7 @@
                  Background="#6F6C89"
                  BorderBrush="#000011"
                  Style="{StaticResource TBStyle}"/>
+        
         <Button x:Name="btnForgot"
                 Content="Отправить"
                 Width="100"
