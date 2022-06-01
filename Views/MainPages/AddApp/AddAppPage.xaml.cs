@@ -16,6 +16,9 @@ using System.Windows.Navigation;
 using System.IO;
 using Launcher0._2.Data;
 using Launcher0._2.Models;
+using System.Net;
+using System.Threading;
+using System.Collections.Specialized;
 
 namespace Launcher0._2.Pages.MainPages
 {
@@ -28,15 +31,46 @@ namespace Launcher0._2.Pages.MainPages
         {
             InitializeComponent();
         }
+        private string _img { get; set; }
+        private string _filepath { get; set; }
 
         private async void btnAdd_Click(object sender, RoutedEventArgs e)
         {
+            if (tbCategory.Text != "" && tbNameGame.Text != "" && tbDescription.Text != "" && _filepath != "" && _img != "")
+            {
+                await UploadData();
+
+                NameValueCollection param = new NameValueCollection();
+                param.Add("originalname", new FileInfo(_filepath).Name);
+                param.Add("setname", tbNameGame.Text);
+
+                using (var client = new WebClient())
+                    await client.UploadValuesTaskAsync(new Uri("https://cryptorin.ru/files/API/UploadFile.php"), "POST", param);
+            }
+            else { MessageBox.Show("не все данные..."); }
+        }
+
+        private async Task UploadData()
+        {
+            //загрузка файла
+            using (var client = new WebClient())
+            {
+                client.Headers[HttpRequestHeader.ContentType] = "application/zip";
+                client.UploadProgressChanged += (sender, e) => { pbProgress.Value = e.ProgressPercentage;
+                    tbPercent.Text = $"{e.ProgressPercentage}% ({((double)e.BytesSent / 1048576).ToString("#.#")}мб)"; };
+
+                var resp = client.UploadFileTaskAsync(new Uri("https://cryptorin.ru/files/API/UploadFile.php"), _filepath);
+
+                MessageBox.Show(Encoding.UTF8.GetString(await resp));
+            }
+
+            //добавление в БД
             Apps app = new Apps()
             {
                 NameApp = tbNameGame.Text,
                 Description = tbDescription.Text,
                 AppCategory_id = ((AppCategory)lvCategory.SelectedItem).ID,
-                Author_id = 1
+                Author_id = CurrentUser.user.ID
             };
 
             dbApp db = new dbApp();
@@ -44,7 +78,7 @@ namespace Launcher0._2.Pages.MainPages
 
             if (res == 1)
             {
-                MessageBox.Show("Успешно!");
+                MessageBox.Show("Данные добавлены!");
             }
             else
             {
@@ -52,6 +86,7 @@ namespace Launcher0._2.Pages.MainPages
             }
         }
 
+        //Установка фото
         private void btnPhoto_Click(object sender, RoutedEventArgs e)
         {
             string path = "";
@@ -63,6 +98,9 @@ namespace Launcher0._2.Pages.MainPages
                 {
                     path = Path.GetFullPath(openFileDialog.FileName);
                     imgPhoto.Source = new BitmapImage(new Uri(path));
+
+                    byte[] imgBytes = File.ReadAllBytes(path);
+                    _img = Convert.ToBase64String(imgBytes);
                 }
             }
             catch (Exception ex)
@@ -84,6 +122,32 @@ namespace Launcher0._2.Pages.MainPages
             lvCategory.SelectionChanged += (s,a) => { tbCategory.Text = ((AppCategory)lvCategory.SelectedItem).NameCategory;
                 lvCategory.Visibility = Visibility.Hidden;
             };
+        }
+
+        //Установка файла (архива)
+        private void FileOpen_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "file (*.zip)|*.zip";
+            try
+            {
+
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    string path = Path.GetFullPath(openFileDialog.FileName);
+                    if (new FileInfo(path).Length / (1024 * 1024) <= 120)
+                    { 
+                        _filepath = path;;
+                        tbfile.Text = openFileDialog.FileName;
+                    }
+                    else { MessageBox.Show("Файл превышает 120 мб"); }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

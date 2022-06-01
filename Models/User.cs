@@ -58,7 +58,6 @@ namespace Launcher0._2.Models
         {
             get { return photo; }
             set { 
-
                     photo = value;
                     OnPropertyChanged();
                 }

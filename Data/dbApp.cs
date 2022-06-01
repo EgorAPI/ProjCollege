@@ -21,7 +21,7 @@ namespace Launcher0._2.Data
         {
             conn = new DataBaseConnection();
 
-            string query = $"SELECT Apps.ID, AppCategory_id,Description,Apps.Photo, Author_id,Apps.DateOfCreated,Path, NameApp FROM `Apps` where Apps.ID = {id}";
+            string query = $"SELECT Apps.ID, AppCategory_id,Description,Apps.Photo, Author_id,Apps.DateOfCreated,Path, NameApp, Downloads, Favorite FROM `Apps` where Apps.ID = {id}";
 
             Apps app = new Apps();
 
@@ -40,6 +40,8 @@ namespace Launcher0._2.Data
                             app.Path = reader["Path"].ToString();
                             app.DateOfCreated = (DateTime)reader["DateOfCreated"];
                             app.Author_id = Convert.ToInt32(reader["Author_id"]);
+                            app.Downloads = Convert.ToInt32(reader["Dawnloads"]);
+                            app.Favorite = Convert.ToInt32(reader["Favorite"]);
                             app.AppCategory_id = Convert.ToInt32(reader["AppCategory_id"]);
                         }
                     }
@@ -79,6 +81,8 @@ namespace Launcher0._2.Data
                             app.Photo = reader["Photo"].ToString();
                             app.Path = reader["Path"].ToString();
                             app.DateOfCreated = (DateTime)reader["DateOfCreated"];
+                            app.Downloads = Convert.ToInt32(reader["Downloads"]);
+                            app.Favorite = Convert.ToInt32(reader["Favorite"]);
                             app.Author_id = Convert.ToInt32(reader["Author_id"]);
                             app.AppCategory_id = Convert.ToInt32(reader["AppCategory_id"]);
                             app.AppCategory = reader["AppCategory"].ToString();
@@ -132,7 +136,7 @@ namespace Launcher0._2.Data
         }
 
         //Удаление App из БД по id
-        public async Task<int> DeleteApp(int id)
+        public async Task<int> RemoveApp(int id)
         {
             conn = new DataBaseConnection();
 

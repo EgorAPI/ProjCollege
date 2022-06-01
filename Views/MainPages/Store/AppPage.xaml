@@ -29,111 +29,167 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <ImageBrush x:Key="imgFavor"  ImageSource="\Assets\heart2.png" Stretch="UniformToFill"/>
+        <ImageBrush x:Key="imgFavor1"  ImageSource="\Assets\heart1.png" Stretch="UniformToFill"/>
+        <Style x:Key="favorStyle" TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="Cursor" Value="Hand"></Setter>
+            <Setter Property="Background" Value="{DynamicResource imgFavor1}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{DynamicResource imgFavor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
-
-    <ScrollViewer  VerticalScrollBarVisibility="Hidden">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="400"></RowDefinition>
-                <RowDefinition Height="200"></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
 
-            <Border Grid.ColumnSpan="2">
-            <Border.Background>
-                <ImageBrush ImageSource="{Binding Photo}" Stretch="UniformToFill"/>
-            </Border.Background>
+        <ScrollViewer  VerticalScrollBarVisibility="Hidden">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="400"></RowDefinition>
+                    <RowDefinition Height="200"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
 
-            <Border.OpacityMask>
-                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                    <GradientStop Color="Black" Offset="0.7"/>
-                    <GradientStop Color="Transparent" Offset="1"/>
-                </LinearGradientBrush>
-            </Border.OpacityMask>
-        </Border>
+                <Border Grid.ColumnSpan="2">
+                <Border.Background>
+                    <ImageBrush ImageSource="{Binding Photo}" Stretch="UniformToFill"/>
+                </Border.Background>
 
-            <Button x:Name="btnBack"
-                    Width="110" Height="50"
-                    VerticalAlignment="Top" HorizontalAlignment="Left"
-                    Margin="15"
-                    BorderThickness="0"
-                    RenderOptions.BitmapScalingMode="HighQuality"
-                Style="{DynamicResource BackStyle}"
-                    Click="btnBack_Click">
-                
-
-                <Button.Background>
-                    <ImageBrush ImageSource="\Assets\Back_default.png" Stretch="Uniform"/>
-                </Button.Background>
-            </Button>
-
-            <StackPanel Grid.Row="1">
-            <TextBlock Text="{Binding NameApp}"
-                       FontSize="52" FontWeight="Medium"
-                       Foreground="LightGray"
-                       Margin="15,0,0,0"/>
-
-            <Button x:Name="btnDownload" Content="Скачать"
-                   FontSize="30" 
-                    HorizontalAlignment="Left"
-                    Margin="15,10,0,0"
-                    Height="60" Width="200"
-                    Background="{StaticResource MainColorTwo}"
-                    Foreground="LightGray"
-                    Style="{StaticResource btnStyle}"/>
-        </StackPanel>
-
-        <StackPanel Grid.Row="1" Grid.Column="1">
-            <TextBlock Text="{Binding StringFormat=Автор: {0}, Path=Author}"
-                       FontSize="28" FontWeight="Medium"
-                       Foreground="LightGray"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,15,0"/>
-
-            <TextBlock Text="{Binding StringFormat=Категория: {0}, Path=AppCategory}"
-                       FontSize="28" FontWeight="Medium"
-                       Foreground="LightGray"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,15,0"/>
-
-            <TextBlock Text="{Binding StringFormat=Дата релиза: {0:d}, Path=DateOfCreated}"
-                       FontSize="28" FontWeight="Medium"
-                       Foreground="LightGray"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,15,0"/>
-        </StackPanel>
-
-        <TextBlock Text="Описание:" Grid.Row="2"
-                       FontSize="24" FontWeight="Medium"
-                       Foreground="LightGray"
-                       HorizontalAlignment="Left"
-                       Margin="15,0,0,0"/>
-
-            <Border Grid.ColumnSpan="2" Grid.Row="2"
-                    HorizontalAlignment="Left" VerticalAlignment="Top"
-                    Width="800" Height="160" Margin="15,35,0,10"
-                    Background="{StaticResource MainColorOne}"
-                    BorderThickness="0">
-
-                <Border.Effect>
-                <DropShadowEffect BlurRadius="8"
-                                ShadowDepth="0"
-                                Opacity=".5"/>
-                </Border.Effect>
-                
-                <ScrollViewer Grid.ColumnSpan="2" Grid.Row="2" VerticalScrollBarVisibility="Hidden">
-
-                    <TextBlock Text="{Binding Description}"
-                           VerticalAlignment="Top" HorizontalAlignment="Left"
-                           FontSize="24" Foreground="LightGray"
-                           Margin="8" TextWrapping="Wrap"/>
-                </ScrollViewer>
-
+                <Border.OpacityMask>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Color="Black" Offset="0.7"/>
+                        <GradientStop Color="Transparent" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.OpacityMask>
             </Border>
+
+                <Button x:Name="btnBack"
+                        Width="110" Height="50"
+                        VerticalAlignment="Top" HorizontalAlignment="Left"
+                        Margin="15"
+                        BorderThickness="0"
+                        RenderOptions.BitmapScalingMode="HighQuality"
+                    Style="{DynamicResource BackStyle}"
+                        Click="btnBack_Click">
+                
+
+                    <Button.Background>
+                        <ImageBrush ImageSource="\Assets\Back_default.png" Stretch="Uniform"/>
+                    </Button.Background>
+                </Button>
+
+                <StackPanel Grid.Row="1">
+                    <StackPanel Orientation="Horizontal">
+                    
+                        <TextBlock Text="{Binding NameApp}"
+                           FontSize="52" FontWeight="Medium"
+                           Foreground="LightGray"
+                           Margin="15,0,15,0"/>
+
+                        <Button Height="45" Width="45" Style="{DynamicResource favorStyle}"
+                                BorderThickness="0"
+                                Click="btnFavorite_Click"
+                                      x:Name="btnFavorite">
+                        </Button>
+                    
+                    </StackPanel>
+
+                    <Button x:Name="btnDownload" Content="Скачать"
+                       FontSize="30" 
+                        HorizontalAlignment="Left"
+                        Margin="15,10,0,0"
+                        Height="60" Width="200"
+                        Background="{StaticResource MainColorTwo}"
+                        Foreground="LightGray"
+                            Click="btnDownload_Click"
+                        Style="{StaticResource btnStyle}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="1">
+                <TextBlock Text="{Binding StringFormat=Автор: {0}, Path=Author}"
+                           FontSize="28" FontWeight="Medium"
+                           Foreground="LightGray"
+                           HorizontalAlignment="Right"
+                           Margin="0,0,15,0"/>
+
+                <TextBlock Text="{Binding StringFormat=Категория: {0}, Path=AppCategory}"
+                           FontSize="28" FontWeight="Medium"
+                           Foreground="LightGray"
+                           HorizontalAlignment="Right"
+                           Margin="0,0,15,0"/>
+
+                <TextBlock Text="{Binding StringFormat=Дата релиза: {0:d}, Path=DateOfCreated}"
+                           FontSize="28" FontWeight="Medium"
+                           Foreground="LightGray"
+                           HorizontalAlignment="Right"
+                           Margin="0,0,15,0"/>
+            </StackPanel>
+
+            <TextBlock Text="Описание:" Grid.Row="2"
+                           FontSize="24" FontWeight="Medium"
+                           Foreground="LightGray"
+                           HorizontalAlignment="Left"
+                           Margin="15,0,0,0"/>
+
+                <Border Grid.ColumnSpan="2" Grid.Row="2"
+                        HorizontalAlignment="Left" VerticalAlignment="Top"
+                        Width="800" Height="160" Margin="15,35,0,10"
+                        Background="{StaticResource MainColorOne}"
+                        BorderThickness="0">
+
+                    <Border.Effect>
+                    <DropShadowEffect BlurRadius="8"
+                                    ShadowDepth="0"
+                                    Opacity=".5"/>
+                    </Border.Effect>
+                
+                    <ScrollViewer Grid.ColumnSpan="2" Grid.Row="2" VerticalScrollBarVisibility="Hidden">
+
+                        <TextBlock Text="{Binding Description}"
+                               VerticalAlignment="Top" HorizontalAlignment="Left"
+                               FontSize="24" Foreground="LightGray"
+                               Margin="8" TextWrapping="Wrap"/>
+                    </ScrollViewer>
+
+                </Border>
+            </Grid>
+        </ScrollViewer>
+
+        <Grid VerticalAlignment="Bottom" x:Name="gridProgress"
+              Height="60" Background="{StaticResource MainColorOne}"
+              Visibility="Hidden">
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="10">
+
+                <ProgressBar  x:Name="pbProgress"
+                              Width="800"
+                              HorizontalAlignment="Left"
+                              Foreground="Gray"
+                              Background="{StaticResource MainColorTwo}"
+                              BorderBrush="{StaticResource MainColorTwo}"/>
+
+                <TextBlock Margin="10,0,0,0"
+                           x:Name="tbPercent"
+                           VerticalAlignment="Center"
+                           FontSize="26"
+                           Foreground="LightGray"/>
+            </StackPanel>
         </Grid>
-    </ScrollViewer>
+    </Grid>
 </Page>

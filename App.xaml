@@ -57,7 +57,7 @@
                         <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                             <Grid>
                                 <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
-                                <TextBlock x:Name="WaterMark" Text="{TemplateBinding Tag}" Visibility="Collapsed"></TextBlock>
+                                <TextBlock x:Name="WaterMark" Margin="5,0,0,0" Text="{TemplateBinding Tag}" Visibility="Collapsed"></TextBlock>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>

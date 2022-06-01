@@ -93,20 +93,10 @@
 
                     </ListView>
                 </StackPanel>
-
-                <Button x:Name="btnPhoto"
-                        Content="Добавить фото"
-                        Width="200" Height="40"
-                        HorizontalAlignment="Right" VerticalAlignment="Top"
-                        Margin="0,-35,10,0"
-                        FontSize="20"
-                        Foreground="LightGray"
-                        Click="btnPhoto_Click"
-                        Background="{StaticResource MainColorThree}"
-                        Style="{StaticResource btnStyle}"/>
-
             </StackPanel>
 
+
+            
             <TextBox x:Name="tbDescription" Grid.Column="1"
                          Tag="описание" TextWrapping="Wrap"
                          FontSize="26"                        
@@ -115,24 +105,66 @@
                          BorderBrush="{StaticResource MainColorTwo}"
                          Style="{StaticResource TBStyle}"/>
 
+            <StackPanel Grid.Row="1" Orientation="Vertical"
+                        Width="220" HorizontalAlignment="Left">
+
+                <Button x:Name="btnPhoto"
+                    Content="Добавить фото"
+                    Width="200" Height="40"
+                    HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Margin="10"
+                    FontSize="20"
+                    Foreground="LightGray"
+                    Click="btnPhoto_Click"
+                    Background="{StaticResource MainColorThree}"
+                    Style="{StaticResource btnStyle}"/>
+
+                <Button  Content="выбрать файл"
+                    Width="200" Height="40"
+                    HorizontalAlignment="Left"
+                    Margin="10,20,0,0"
+                    FontSize="20"
+                    Foreground="LightGray"
+                    Background="{StaticResource MainColorOne}"
+                    Style="{StaticResource btnStyle}"
+                        Click="FileOpen_Click"/>
+
+                <TextBlock x:Name="tbfile" TextWrapping="Wrap"
+                            Margin="10"
+                           FontSize="14"
+                           Foreground="LightGray"/>
+            </StackPanel>
+
             <Image x:Name="imgPhoto" Grid.Row="1" Grid.ColumnSpan="2"
-                     Margin="10"
+                     Margin="10" Width="600"
                    Stretch="Uniform">
-                
-                
+
+
             </Image>
 
-            <Button x:Name="btnAdd" 
-                        Grid.Column="1" Grid.Row="2"
+            <StackPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left"
+                         Orientation="Horizontal" Width="890">
+
+                <ProgressBar x:Name="pbProgress"
+                    Width="700" Margin="10"
+                             Background="{StaticResource MainColorThree}"
+                             BorderBrush="{StaticResource MainColorTwo}"/>
+
+                <TextBlock x:Name="tbPercent" FontSize="18" Foreground="LightGray"/>
+
+            </StackPanel>
+
+            <Button x:Name="btnAdd" Grid.Column="1" Grid.Row="2"
+                    HorizontalAlignment="Right"
                             Content="Добавить"
                             Width="200" Height="40"
-                            HorizontalAlignment="Right"
                             Margin="10"
                             FontSize="20"
                             Foreground="LightGray"
                             Background="{StaticResource MainColorOne}"
                             Style="{StaticResource btnStyle}"
                         Click="btnAdd_Click"/>
+            
         </Grid>
     </Border>
 </Page>

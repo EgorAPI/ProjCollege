@@ -92,27 +92,34 @@ namespace Launcher0._2
 
             param.Add("id", CurrentUser.user.ID.ToString());
 
-            using (WebClient client = new WebClient())
+            try
             {
-                var response = client.UploadValues(new Uri("https://cryptorin.ru/files/API/ImageGetter.php"), "POST", param);
-
-                imgBase64 = Encoding.UTF8.GetString(response);
-                imgBytes = Convert.FromBase64String(imgBase64);
-
-                var img = new BitmapImage();
-                using (var memStream = new MemoryStream(imgBytes))
+                using (WebClient client = new WebClient())
                 {
-                    memStream.Position = 0;
-                    img.BeginInit();
-                    img.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-                    img.CacheOption = BitmapCacheOption.OnLoad;
-                    img.UriSource = null;
-                    img.StreamSource = memStream;
-                    img.EndInit();
-                }
+                    var response = client.UploadValues(new Uri("https://cryptorin.ru/files/API/ImageGetter.php"), "POST", param);
 
-                CurrentUser.user.Photo = img;
-            };
+                    imgBase64 = Encoding.UTF8.GetString(response);
+                    imgBytes = Convert.FromBase64String(imgBase64);
+
+                    var img = new BitmapImage();
+                    using (var memStream = new MemoryStream(imgBytes))
+                    {
+                        memStream.Position = 0;
+                        img.BeginInit();
+                        img.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.UriSource = null;
+                        img.StreamSource = memStream;
+                        img.EndInit();
+                    }
+
+                    CurrentUser.user.Photo = img;
+                };
+            }
+            catch (Exception)
+            {
+            }
+
         }
     }
 }
