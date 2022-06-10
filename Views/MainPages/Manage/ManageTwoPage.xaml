@@ -139,9 +139,12 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
 
-                                    <Image Stretch="UniformToFill" Source="{Binding Photo}"
-                                           Margin="10,0,0,0"
-                                           Width="35" Height="35"/>
+                                    <Button Content="del"
+                                            Background="LightCoral"
+                                            BorderThickness="0"
+                                            Width="40"
+                                            Click="btnDelete_Click"/>
+                                    
                                     <TextBlock Text="{Binding ID}"
                                        Margin="10,0,0,0"
                                        Foreground="LightGray"

@@ -9,6 +9,33 @@
       Title="AboutPage">
 
     <Grid>
-        
+        <Grid VerticalAlignment="Top"
+              HorizontalAlignment="Left"
+              Width="700" Height="500"
+              Margin="50">
+
+            <TextBlock Text="V" FontFamily="Britannic Bold"
+                       FontSize="300" Foreground="#FFAFAED9"/>
+
+            <StackPanel HorizontalAlignment="Center"
+                        Width="450"
+                        Margin="120,50,0,0">
+
+                <TextBlock Text="- значит venera"
+                       FontSize="46" Foreground="LightGray"/>
+
+                <TextBlock Text="Версия: x.x" Margin="0,45,0,0"
+                       FontSize="46" Foreground="LightGray"/>
+                
+                <TextBlock Text="Права не защищены"
+                       FontSize="46" Foreground="LightGray"/>
+            </StackPanel>
+        </Grid>
+
+        <TextBlock Text="polyaksuppord@gmail.com"
+                   FontSize="40" Foreground="LightGray"
+                   VerticalAlignment="Bottom"
+                   HorizontalAlignment="Right"
+                   Margin="20"/>
     </Grid>
 </Page>

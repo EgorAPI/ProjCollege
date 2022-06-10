@@ -33,6 +33,8 @@ namespace Launcher0._2.Pages.MainPages
         }
         private string _img { get; set; }
         private string _filepath { get; set; }
+        private string _photopath { get; set; }
+        private int _state = 0;
 
         private async void btnAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -50,57 +52,75 @@ namespace Launcher0._2.Pages.MainPages
             else { MessageBox.Show("не все данные..."); }
         }
 
+        //Добавление App на сервер и в БД
         private async Task UploadData()
         {
+            int state = 0;
             //загрузка файла
             using (var client = new WebClient())
             {
                 client.Headers[HttpRequestHeader.ContentType] = "application/zip";
-                client.UploadProgressChanged += (sender, e) => { pbProgress.Value = e.ProgressPercentage;
-                    tbPercent.Text = $"{e.ProgressPercentage}% ({((double)e.BytesSent / 1048576).ToString("#.#")}мб)"; };
+                client.UploadProgressChanged += (sender, e) => { pbProgress.Value = e.ProgressPercentage*2;
+                    tbPercent.Text = $"{e.ProgressPercentage*2}% ({((double)e.BytesSent / 1048576).ToString("#.#")}мб)"; };
+
+                tbNameGame.IsEnabled = false;
+                tbCategory.IsEnabled = false;
+                tbDescription.IsEnabled = false;
+                _state = 1;
+
+                client.UploadFileCompleted += (s,e) => { tbNameGame.IsEnabled=true;
+                    tbCategory.IsEnabled = true;
+                    tbDescription.IsEnabled = true;
+                    _state = 0;
+                };
 
                 var resp = client.UploadFileTaskAsync(new Uri("https://cryptorin.ru/files/API/UploadFile.php"), _filepath);
+                await ImgSend(_photopath);
 
-                MessageBox.Show(Encoding.UTF8.GetString(await resp));
+                if (Encoding.UTF8.GetString(await resp).Replace(" ","") != "")
+                {
+                    MessageBox.Show(Encoding.UTF8.GetString(await resp));
+                    state = 1;
+                }
             }
 
             //добавление в БД
-            Apps app = new Apps()
+            if (state == 0)
             {
-                NameApp = tbNameGame.Text,
-                Description = tbDescription.Text,
-                AppCategory_id = ((AppCategory)lvCategory.SelectedItem).ID,
-                Author_id = CurrentUser.user.ID
-            };
+                
+                Apps app = new Apps()
+                {
+                    NameApp = tbNameGame.Text,
+                    Description = tbDescription.Text,
+                    AppCategory_id = ((AppCategory)lvCategory.SelectedItem).ID,
+                    Author_id = CurrentUser.user.ID
+                };
 
-            dbApp db = new dbApp();
-            int res = await db.InsertApp(app);
+                dbApp db = new dbApp();
+                int res = await db.InsertApp(app);
 
-            if (res == 1)
-            {
-                MessageBox.Show("Данные добавлены!");
-            }
-            else
-            {
-                MessageBox.Show("Что-то пошло не так!");
+                if (res == 1)
+                {
+                    MessageBox.Show("Данные добавлены!");
+                }
+                else
+                {
+                    MessageBox.Show("Что-то пошло не так!");
+                }
             }
         }
 
-        //Установка фото
+        //Выбор фото
         private void btnPhoto_Click(object sender, RoutedEventArgs e)
         {
-            string path = "";
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Image (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg";
             try
             {
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    path = Path.GetFullPath(openFileDialog.FileName);
-                    imgPhoto.Source = new BitmapImage(new Uri(path));
-
-                    byte[] imgBytes = File.ReadAllBytes(path);
-                    _img = Convert.ToBase64String(imgBytes);
+                    _photopath = Path.GetFullPath(openFileDialog.FileName);
+                    imgPhoto.Source = new BitmapImage(new Uri(_photopath));
                 }
             }
             catch (Exception ex)
@@ -110,10 +130,33 @@ namespace Launcher0._2.Pages.MainPages
             }
         }
 
+        //Загрузка фото на сервер
+        private async Task ImgSend(string path)
+        {
+            byte[] imgBytes = File.ReadAllBytes(path);
+            string imgBase64 = Convert.ToBase64String(imgBytes);
+
+            NameValueCollection param = new NameValueCollection();
+
+            param.Add("name", tbNameGame.Text);
+            param.Add("image", imgBase64);
+
+            using (WebClient client = new WebClient())
+            {
+                var response = await client.UploadValuesTaskAsync(new Uri("https://cryptorin.ru/files/API/ImageAppSetter.php"), "POST", param);
+
+                if (Encoding.UTF8.GetString(response).Replace(" ", "") != "")
+                {
+                    MessageBox.Show(Encoding.UTF8.GetString(response));
+                }
+            }
+        }
+
+        List<AppCategory> categoryList { get; set; }
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             dbCategory db = new dbCategory();
-            List<AppCategory> categoryList = await db.GetCategories();
+            categoryList = await db.GetCategories();
 
             lvCategory.ItemsSource = categoryList;
 
@@ -147,6 +190,14 @@ namespace Launcher0._2.Pages.MainPages
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void tbCategory_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (categoryList != null)
+            {
+                lvCategory.ItemsSource = categoryList.Where(x => x.NameCategory.ToLower().Contains(tbCategory.Text.ToLower())).ToList();
             }
         }
     }

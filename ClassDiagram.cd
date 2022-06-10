@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Launcher0._2.Models.AppCategory">
+    <Position X="8" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\AppCategory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Launcher0._2.Models.AppFavorite">
+    <Position X="8" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAACAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\AppFavorite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Launcher0._2.Models.Apps" BaseTypeListCollapsed="true">
+    <Position X="4.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIIAggCIAoAAAAAAAgEAAAAAAAAEAIAIAAAA=</HashCode>
+      <FileName>Models\Apps.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.221" Collapsed="true" />
+  </Class>
+  <Class Name="Launcher0._2.Models.User" BaseTypeListCollapsed="true">
+    <Position X="6.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAICAAgCAgIAAAAEAAgABAAAACAQAAIAEAAAA=</HashCode>
+      <FileName>Models\User.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Launcher0._2.Data.dbUser">
+    <Position X="12.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAQAAAAAAAAAAAEAAAAAAkAAQQAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Data\dbUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Launcher0._2.Data.dbCategory">
+    <Position X="10.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\dbCategory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Launcher0._2.Data.dbAppFavorite">
+    <Position X="12.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAAQAAAAAIAAQAAAAAAA=</HashCode>
+      <FileName>Data\dbAppFavorite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Launcher0._2.Data.dbApp">
+    <Position X="10.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAAAQAAgAAAAAIAAAAIAA=</HashCode>
+      <FileName>Data\dbApp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

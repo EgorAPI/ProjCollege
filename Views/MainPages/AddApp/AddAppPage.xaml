@@ -62,8 +62,7 @@
                 <StackPanel>
 
                     <TextBox x:Name="tbCategory"
-                         Tag="Category"
-                          Text="категория"
+                         Tag="категория"
                          FontSize="26"
                          Width="450"
                          Height="50"
@@ -71,7 +70,8 @@
                          Margin="10,0,0,0" Padding="5"
                          Background="{StaticResource MainColorThree}"
                          Style="{StaticResource TBStyle}"
-                         BorderBrush="{StaticResource MainColorTwo}"/>
+                         BorderBrush="{StaticResource MainColorTwo}"
+                         TextChanged="tbCategory_TextChanged"/>
 
                     <ListView x:Name="lvCategory"
                               Height="100" Width="320"

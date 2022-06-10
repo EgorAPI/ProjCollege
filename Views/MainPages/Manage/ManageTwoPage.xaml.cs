@@ -18,6 +18,8 @@ using LiveCharts.Defaults;
 using Launcher0._2.Classes;
 using Launcher0._2.Data;
 using Launcher0._2.Models;
+using System.Collections.Specialized;
+using System.Net;
 
 namespace Launcher0._2.Views.MainPages.Manage
 {
@@ -102,20 +104,20 @@ namespace Launcher0._2.Views.MainPages.Manage
                     });
                 }
             }
-            else
-            {
-                foreach (var item in (from p in listStaticApps
-                                      orderby p.Favorite descending
-                                      select p).Take(5).ToList())
-                {
-                    SeriesPie.Add(new PieSeries
-                    {
-                        Title = item.NameApp,
-                        Values = new ChartValues<ObservableValue> { new ObservableValue(item.Favorite) },
-                        DataLabels = true
-                    });
-                }
-            }
+            //else
+            //{
+            //    foreach (var item in (from p in listStaticApps
+            //                          orderby p.Favorite descending
+            //                          select p).Take(5).ToList())
+            //    {
+            //        SeriesPie.Add(new PieSeries
+            //        {
+            //            Title = item.NameApp,
+            //            Values = new ChartValues<ObservableValue> { new ObservableValue(item.Favorite) },
+            //            DataLabels = true
+            //        });
+            //    }
+            //}
 
             chartPie.Update(true, true);
         }
@@ -133,6 +135,30 @@ namespace Launcher0._2.Views.MainPages.Manage
         private void tbAppName_TextChanged(object sender, TextChangedEventArgs e)
         {
             AppInfo();
+        }
+
+        private async void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (lvApps.SelectedItem != null)
+            {
+                await app.RemoveApp(((Apps)lvApps.SelectedItem).ID);
+
+                NameValueCollection param = new NameValueCollection();
+
+                param.Add("name", ((Apps)lvApps.SelectedItem).NameApp);
+                using (var client = new WebClient())
+                {
+                    var response = await client.UploadValuesTaskAsync(new Uri("https://cryptorin.ru/files/API/RemoveApp.php"), "POST", param);
+
+                    string res = Encoding.UTF8.GetString(response);
+                    if (res.Replace(" ", "") != "")
+                    {
+                        MessageBox.Show(res);
+                    }
+                }
+
+                lvApps.Items.Remove(lvApps.SelectedItem);
+            }
         }
     }
 }

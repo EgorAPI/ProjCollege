@@ -20,6 +20,7 @@ using System.Net;
 using System.Threading;
 using Launcher0._2.Data;
 using System.IO.Compression;
+using System.Collections.Specialized;
 
 namespace Launcher0._2.Views.MainPages.Strore
 {
@@ -42,11 +43,52 @@ namespace Launcher0._2.Views.MainPages.Strore
         }
         private int favoriteState { get; set; }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             if (favoriteState == 1)
             {
                 btnFavorite.Background = new ImageBrush(new BitmapImage(new Uri(@"pack://application:,,,/Assets/heart2.png")));
+            }
+
+            await LoadPhoto();
+        }
+
+        //Получение base64 фото с сервера
+        private async Task LoadPhoto()
+        {
+            byte[] imgBytes;
+            string imgBase64;
+
+            NameValueCollection param = new NameValueCollection();
+
+            param.Add("name", ((Apps)this.DataContext).NameApp);
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    var response = await client.UploadValuesTaskAsync(new Uri("https://cryptorin.ru/files/API/ImageAppGetter.php"), "POST", param);
+
+                    imgBase64 = Encoding.UTF8.GetString(response);
+                    imgBytes = Convert.FromBase64String(imgBase64);
+
+                    var img = new BitmapImage();
+                    using (var memStream = new MemoryStream(imgBytes))
+                    {
+                        memStream.Position = 0;
+                        img.BeginInit();
+                        img.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.UriSource = null;
+                        img.StreamSource = memStream;
+                        img.EndInit();
+                    }
+
+                    ((Apps)this.DataContext).Photo = img;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -61,7 +103,7 @@ namespace Launcher0._2.Views.MainPages.Strore
             GC.WaitForPendingFinalizers();
         }
 
-        //Скачивание
+        //Скачивание файла с сервера
         private void btnDownload_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -86,7 +128,7 @@ namespace Launcher0._2.Views.MainPages.Strore
             }
         }
 
-        //По завершению скачивания (распакова)
+        //Распаковка по завершению скачивания
         private void Client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
             try

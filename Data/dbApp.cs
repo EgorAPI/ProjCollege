@@ -21,7 +21,7 @@ namespace Launcher0._2.Data
         {
             conn = new DataBaseConnection();
 
-            string query = $"SELECT Apps.ID, AppCategory_id,Description,Apps.Photo, Author_id,Apps.DateOfCreated,Path, NameApp, Downloads, Favorite FROM `Apps` where Apps.ID = {id}";
+            string query = $"SELECT Apps.ID, AppCategory_id,Description,Apps.Photo, Author_id,Apps.DateOfCreated,Path, NameApp, Downloads FROM `Apps` where Apps.ID = {id}";
 
             Apps app = new Apps();
 
@@ -36,12 +36,10 @@ namespace Launcher0._2.Data
                             app.ID = Convert.ToInt32(reader["ID"]);
                             app.NameApp = reader["NameApp"].ToString();
                             app.Description = reader["Description"].ToString();
-                            app.Photo = reader["Photo"].ToString();
                             app.Path = reader["Path"].ToString();
                             app.DateOfCreated = (DateTime)reader["DateOfCreated"];
                             app.Author_id = Convert.ToInt32(reader["Author_id"]);
                             app.Downloads = Convert.ToInt32(reader["Dawnloads"]);
-                            app.Favorite = Convert.ToInt32(reader["Favorite"]);
                             app.AppCategory_id = Convert.ToInt32(reader["AppCategory_id"]);
                         }
                     }
@@ -78,11 +76,9 @@ namespace Launcher0._2.Data
                             app.ID = Convert.ToInt32(reader["ID"]);
                             app.NameApp = reader["NameApp"].ToString();
                             app.Description = reader["Description"].ToString();
-                            app.Photo = reader["Photo"].ToString();
                             app.Path = reader["Path"].ToString();
                             app.DateOfCreated = (DateTime)reader["DateOfCreated"];
                             app.Downloads = Convert.ToInt32(reader["Downloads"]);
-                            app.Favorite = Convert.ToInt32(reader["Favorite"]);
                             app.Author_id = Convert.ToInt32(reader["Author_id"]);
                             app.AppCategory_id = Convert.ToInt32(reader["AppCategory_id"]);
                             app.AppCategory = reader["AppCategory"].ToString();
@@ -110,7 +106,7 @@ namespace Launcher0._2.Data
         {
             conn = new DataBaseConnection();
 
-            string query = "insert into Apps (NameApp, Description, Photo, AppCategory_id, Author_id) values (@nameapp, @description, @photo, @category, @author)";
+            string query = "insert into Apps (NameApp, Description, AppCategory_id, Author_id) values (@nameapp, @description, @category, @author)";
             int res = 0;
             try
             {
@@ -118,7 +114,6 @@ namespace Launcher0._2.Data
                 {
                     comm.Parameters.AddWithValue("@nameapp", app.NameApp);
                     comm.Parameters.AddWithValue("@description", app.Description);
-                    comm.Parameters.AddWithValue("@photo", app.Photo);
                     comm.Parameters.AddWithValue("@category", app.AppCategory_id);
                     comm.Parameters.AddWithValue("@author", app.Author_id);
 
@@ -160,34 +155,6 @@ namespace Launcher0._2.Data
             {
                 MessageBox.Show(ex.Message);
             }
-            return res;
-        }
-
-        //Изменение(обновление) App
-        public async Task<int> UpdateApp(Apps app)
-        {
-            conn = new DataBaseConnection();
-
-            string query = $"update Apps set NameApp = @nameapp, Description = @description, Photo = @photo, AppCategory_id = @category where ID = {app.ID}";
-            int res = 0;
-            try
-            {
-                using (MySqlCommand comm = new MySqlCommand(query, conn.connOpen()))
-                {
-                    comm.Parameters.AddWithValue("@nameapp", app.NameApp);
-                    comm.Parameters.AddWithValue("@description", app.Description);
-                    comm.Parameters.AddWithValue("@photo", app.Photo);
-                    comm.Parameters.AddWithValue("@category", app.AppCategory_id);
-
-                    res = await comm.ExecuteNonQueryAsync();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            conn.connClose();
             return res;
         }
     }

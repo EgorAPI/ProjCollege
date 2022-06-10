@@ -48,26 +48,5 @@ namespace Launcher0._2.Data
             return null;
         }
 
-        public async Task<int> InsertCategory(string name)
-        {
-            try
-            {
-                connection = new DataBaseConnection();
-                using (MySqlCommand command = new MySqlCommand("insert into AppCategory (CategoryName) values (@name)", connection.connOpen()))
-                {
-                    command.Parameters.AddWithValue("@name", name);
-                    int res = await command.ExecuteNonQueryAsync();
-
-                    connection.connClose();
-                    return res;
-                }
-            }
-            catch (Exception)
-            {
-            }
-            connection.connClose();
-            return 0;
-
-        }
     }
 }

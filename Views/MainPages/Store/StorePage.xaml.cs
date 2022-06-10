@@ -4,7 +4,10 @@ using Launcher0._2.Models;
 using Launcher0._2.Views.MainPages.Strore;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,12 +41,59 @@ namespace Launcher0._2.Pages.MainPages
         public List<Apps> searchListApps = new List<Apps>();
         public List<AppFavorite> listfavorite { get; set; }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-           CreateItems();
+            await CreateItems();
+
+            if (mainListApps != null)
+            {
+                for (int i = 0; i < mainListApps.Count; i++)
+                {
+                    await LoadPhoto(mainListApps[i].NameApp, i);
+                }
+            } 
+        }
+        //скачивание фото с сервера
+        private async Task LoadPhoto(string nameapp, int index)
+        {
+            byte[] imgBytes;
+            string imgBase64;
+
+            NameValueCollection param = new NameValueCollection();
+
+            param.Add("name", nameapp);
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    var response = await client.UploadValuesTaskAsync(new Uri("https://cryptorin.ru/files/API/ImageAppGetter.php"), "POST", param);
+
+                    imgBase64 = Encoding.UTF8.GetString(response);
+                    imgBytes = Convert.FromBase64String(imgBase64);
+
+                    var img = new BitmapImage();
+                    using (var memStream = new MemoryStream(imgBytes))
+                    {
+                        memStream.Position = 0;
+                        img.BeginInit();
+                        img.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.UriSource = null;
+                        img.StreamSource = memStream;
+                        img.EndInit();
+                    }
+
+                    mainListApps[index].Photo = img;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
-        private async void CreateItems()
+        //Получение списка Apps
+        private async Task CreateItems()
         {
             dbApp dbApp = new dbApp();
             mainListApps = await dbApp.GetApps();
@@ -61,7 +111,11 @@ namespace Launcher0._2.Pages.MainPages
 
         private void listApps_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
+            if (listfavorite == null)
+            {
+                FrameManager.mainFrame.Navigate(new AppPage((Apps)listApps.SelectedItem, 0));
+            }
+            else
             {
                 if (listfavorite.Where(x => x.App_id == ((Apps)listApps.SelectedItem).ID).Count() > 0)
                 {
@@ -72,10 +126,6 @@ namespace Launcher0._2.Pages.MainPages
                     FrameManager.mainFrame.Navigate(new AppPage((Apps)listApps.SelectedItem, 0));
                 }
             }
-            catch (Exception)
-            {
-            }
-            
         }
 
         private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
@@ -122,6 +172,12 @@ namespace Launcher0._2.Pages.MainPages
                 if (togFavorite.IsChecked is true)
                 {
                     searchListApps.RemoveAll(x => x.ID > -1);
+
+                    if (listfavorite == null)
+                    {
+                        goto B;
+                    }
+                    
                     for (int i = 0; i < listfavorite.Count; i++)
                     {
                         searchListApps.Add(mainListApps.Where(x => x.ID == listfavorite.ElementAt(i).App_id).FirstOrDefault());
@@ -137,10 +193,13 @@ namespace Launcher0._2.Pages.MainPages
                     {
                         searchListApps = searchListApps.OrderByDescending(x => x.DateOfCreated).ToList();
                     }
+
+                    B:;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
             }
             listApps.ItemsSource = searchListApps;
         }
