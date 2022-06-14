@@ -57,6 +57,8 @@ namespace Launcher0._2
 
                 CurrentUser.user = await dbuser.GetUser(LoginTB.Text, pas);
 
+                await dbuser.UpdateActivity(CurrentUser.user.ID);
+
                 MainWin mainWin = new MainWin();
                 mainWin.Show();
                 AuthWindow.authWin.Close();

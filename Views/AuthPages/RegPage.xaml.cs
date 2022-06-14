@@ -79,7 +79,6 @@ namespace Launcher0._2
 
                             EmailSender mailsender = new EmailSender();
                             await mailsender.SendMailAsync(TBEmail.Text, code);
-
                             state = 1;
 
                             RegGrid.Visibility = Visibility.Hidden;

@@ -20,6 +20,7 @@ using Launcher0._2.Models;
 using System.Security.Cryptography;
 using System.Collections.Specialized;
 using MySql.Data.MySqlClient;
+using System.Diagnostics;
 
 namespace Launcher0._2.Pages.MainPages
 {
@@ -38,10 +39,24 @@ namespace Launcher0._2.Pages.MainPages
             }
         }
 
+        private string _gamename { get; set; }
+        private string[] _games { get; set; }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             this.DataContext = CurrentUser.user;
 
+            try
+            {
+                _games = Directory.GetDirectories("VeneraApps/");
+                for (int i = 0; i < _games.Length; i++)
+                {
+                    _games[i] = _games[i].Replace("VeneraApps/", "");
+                }
+                lvMyGame.ItemsSource = _games;
+            }
+            catch (Exception)
+            {
+            }
         }
 
         //Выбор фото с помощью OpenFileDialog
@@ -157,6 +172,60 @@ namespace Launcher0._2.Pages.MainPages
         {
             GC.Collect();
             GC.WaitForPendingFinalizers();
+        }
+
+        private void lvMyGame_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            btnPlay.IsEnabled = true;
+            btnRemove.IsEnabled = true;
+            _gamename = lvMyGame.SelectedItem as string;
+        }
+
+        private void btnPlay_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string[] games = Directory.GetDirectories($"VeneraApps/{_gamename}");
+                if (games.Length <2)
+                {
+                    string game = games.First();
+
+                    string[] files = Directory.GetFiles($"{game}", "*.exe");
+                    string path = files.Where(x => !x.Equals("UnityCrashHandler64.exe")).First();
+
+                    Process.Start(path);
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Не удалось найти файл!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void btnRemove_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult res = MessageBox.Show($"Удалить {_gamename}?", "Внимание!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (res == MessageBoxResult.Yes)
+            {
+                if (Directory.Exists($"VeneraApps/{_gamename}"))
+                {
+                    Directory.Delete($"VeneraApps/{_gamename}", true);
+                }
+
+                try
+                {
+                    _games = Directory.GetDirectories("VeneraApps/");
+                    for (int i = 0; i < _games.Length; i++)
+                    {
+                        _games[i] = _games[i].Replace("VeneraApps/", "");
+                    }
+                    lvMyGame.ItemsSource = _games;
+                }
+                catch (Exception)
+                {
+                }
+            }
         }
     }
 }

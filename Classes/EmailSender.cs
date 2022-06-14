@@ -22,7 +22,7 @@ namespace Launcher0._2.Classes
             mailmessage.Body = $"Ваш код: {code}\nГруппа поддержки Venera....:)";
 
             SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new NetworkCredential("Polyaksuppord@gmail.com", "Polyakkrut13");
+            smtp.Credentials = new NetworkCredential("egorik2509@gmail.com", "lkxrefdxgvgihtgi");
             smtp.EnableSsl = true;
             try
             {

@@ -8,6 +8,12 @@
       d:DesignHeight="660" d:DesignWidth="1115"
       Title="ProfilePage" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
     <Page.Resources>
+
+        <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="Foreground" Value="LightGray"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
     </Page.Resources>
 
     <Grid>
@@ -17,7 +23,7 @@
             </Grid.Effect>
 
             <Grid.Background>
-                <ImageBrush ImageSource="D:\Photo\картинки\кибер.jpg"
+                <ImageBrush ImageSource="\Assets\кибер.jpg"
                             Stretch="Fill"/>
             </Grid.Background>
         </Grid>
@@ -171,23 +177,17 @@
                           BorderBrush="{StaticResource MainColorThree}"
                           BorderThickness="2"
                           HorizontalAlignment="Right"
-                          VerticalAlignment="Top">
+                          VerticalAlignment="Top"
+                              SelectionChanged="lvMyGame_SelectionChanged">
                         <ListView.Effect>
                             <DropShadowEffect BlurRadius="10"
                                               ShadowDepth="0"
                                               Opacity="0.5"/>
                         </ListView.Effect>
-
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding NameApp}"
-                                           FontSize="20"
-                                           Foreground="LightGray"/>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
                     </ListView>
-                    
-                    <Button x:Name="btnPlay"
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="btnPlay"
                             Content="Играть"
                             IsEnabled="False"
                             Width="200" Height="40"
@@ -195,8 +195,22 @@
                             Margin="10"
                             FontSize="20"
                             Foreground="LightGray"
+                            Click="btnPlay_Click"
                             Background="{StaticResource MainColorThree}"
                             Style="{StaticResource btnStyle}"/>
+
+                        <Button x:Name="btnRemove"
+                            Content="Удалить"
+                            IsEnabled="False"
+                            Width="100" Height="40"
+                            HorizontalAlignment="Left"
+                            Margin="10"
+                            FontSize="20"
+                            Foreground="LightGray"
+                            Click="btnRemove_Click"
+                            Background="{StaticResource MainColorThree}"
+                            Style="{StaticResource btnStyle}"/>
+                    </StackPanel>
                 </StackPanel>
 
             </Grid>

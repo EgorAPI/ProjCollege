@@ -129,7 +129,7 @@ namespace Launcher0._2.Views.MainPages.Strore
         }
 
         //Распаковка по завершению скачивания
-        private void Client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        private async void Client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
             try
             {
@@ -138,6 +138,9 @@ namespace Launcher0._2.Views.MainPages.Strore
             catch (Exception)
             { }
             File.Delete($"{((Apps)this.DataContext).NameApp}.zip");
+
+            dbApp db = new dbApp();
+            await db.UpdateDawnload(((Apps)this.DataContext).ID);
 
             gridProgress.Visibility = Visibility.Hidden;
         }

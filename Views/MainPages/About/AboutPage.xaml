@@ -24,7 +24,7 @@
                 <TextBlock Text="- значит venera"
                        FontSize="46" Foreground="LightGray"/>
 
-                <TextBlock Text="Версия: x.x" Margin="0,45,0,0"
+                <TextBlock Text="Версия: 1.0" Margin="0,45,0,0"
                        FontSize="46" Foreground="LightGray"/>
                 
                 <TextBlock Text="Права не защищены"

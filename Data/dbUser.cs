@@ -294,5 +294,22 @@ namespace Launcher0._2.Data
                 }
             }
         }
+
+        //Обновление активности
+        public async Task UpdateActivity(int id)
+        {
+            string query = $"update Users set Activity = '{DateTime.Now}'";
+            try
+            {
+                using (MySqlCommand comm = new MySqlCommand(query, conn.connOpen()))
+                await comm.ExecuteNonQueryAsync();
+                conn.connClose();
+            }
+            catch (Exception ex)
+            {
+                conn.connClose();
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }

@@ -305,7 +305,9 @@
   <ItemGroup>
     <Resource Include="Assets\loadgif.gif" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Assets\кибер.jpg" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\checkmark.png" />
   </ItemGroup>

@@ -36,6 +36,10 @@
             </Setter>
         </Style>
 
+        <Style x:Key="topStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="Foreground" Value="LightGray"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
     </Page.Resources>
 
     <Grid>
@@ -188,7 +192,7 @@
                 <StackPanel Margin="0,15,0,0">
 
                     <TextBox x:Name="tbTop5"
-                             FontSize="24"
+                             FontSize="22"
                              VerticalContentAlignment="Center"
                              Width="250" Height="50"
                              Background="{StaticResource MainColorThree}"
@@ -201,12 +205,9 @@
                               Margin="0,5,0,0"
                               BorderThickness="0"
                               Visibility="Hidden"
+                              ItemContainerStyle="{DynamicResource topStyle}"
                               SelectionChanged="lvTop5_SelectionChanged"
                               ScrollViewer.VerticalScrollBarVisibility="Hidden">
-
-                        <ListViewItem FontSize="18" Foreground="LightGray">Топ 5 скачиваемых</ListViewItem>
-                        <ListViewItem FontSize="18" Foreground="LightGray">Топ 5 желаемых</ListViewItem>
-
                     </ListView>
                 </StackPanel>
 

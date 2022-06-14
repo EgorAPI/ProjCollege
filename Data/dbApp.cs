@@ -157,5 +157,23 @@ namespace Launcher0._2.Data
             }
             return res;
         }
+
+        //Dawnload count update
+        public async Task UpdateDawnload(int id)
+        {
+            conn = new DataBaseConnection();
+
+            string query = $"update Apps set Downloads = Apps.Downloads + 1 where Apps.ID = {id}";
+            try
+            {
+                using (MySqlCommand comm = new MySqlCommand(query, conn.connOpen()))
+                await comm.ExecuteNonQueryAsync();
+                conn.connClose();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }

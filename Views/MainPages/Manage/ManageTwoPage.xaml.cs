@@ -44,16 +44,20 @@ namespace Launcher0._2.Views.MainPages.Manage
 
             AppInfo();
 
+            string[] topmass = { "Топ 5 скачиваемых", "Топ 5 желаемых" };
+            lvTop5.ItemsSource = topmass;
             lvTop5.SelectedIndex = 0;
 
             DataContext = this;
         }
 
         dbApp app = new dbApp();
+        dbAppFavorite appFavorite = new dbAppFavorite();
 
         private async void AppLoad()
         {
             listStaticApps = await app.GetApps();
+            listFavoriteApps = appFavorite.GetTopFavorite();
         }
 
         private void AppInfo()
@@ -69,8 +73,12 @@ namespace Launcher0._2.Views.MainPages.Manage
             lvApps.ItemsSource = listQueryApps;
         }
 
+        //Все приложения
         public List<Apps> listStaticApps { get; set; }
+        //Пользовательский список приложения
         public List<Apps> listQueryApps { get; set; }
+        //Избранные приложения
+        public List<TopFavorite> listFavoriteApps { get; set; }
         public SeriesCollection SeriesPie { get; set; } = new SeriesCollection();
         public string totalApps { get; set; }
         public string totalAppsFrom { get; set; }
@@ -104,20 +112,18 @@ namespace Launcher0._2.Views.MainPages.Manage
                     });
                 }
             }
-            //else
-            //{
-            //    foreach (var item in (from p in listStaticApps
-            //                          orderby p.Favorite descending
-            //                          select p).Take(5).ToList())
-            //    {
-            //        SeriesPie.Add(new PieSeries
-            //        {
-            //            Title = item.NameApp,
-            //            Values = new ChartValues<ObservableValue> { new ObservableValue(item.Favorite) },
-            //            DataLabels = true
-            //        });
-            //    }
-            //}
+            else
+            {
+                foreach (var item in listFavoriteApps.Take(5))
+                {
+                    SeriesPie.Add(new PieSeries
+                    {
+                        Title = item.AppName,
+                        Values = new ChartValues<ObservableValue> { new ObservableValue(item.FavoriteCount) },
+                        DataLabels = true
+                    });
+                }
+            }
 
             chartPie.Update(true, true);
         }
@@ -157,7 +163,8 @@ namespace Launcher0._2.Views.MainPages.Manage
                     }
                 }
 
-                lvApps.Items.Remove(lvApps.SelectedItem);
+                AppLoad();
+                lvApps.ItemsSource = listStaticApps;
             }
         }
     }
